@@ -1,0 +1,46 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    margin: 30px;
+}
+
+input {
+    height: 30px;
+    width: 220px;
+    padding-left: 10px;
+}
+
+.sketch-container {
+    width: 800px;
+    height: 800px;
+    margin: 40px auto;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.button {
+    width: 60px;
+    height: 30px;
+}
+
+.square {
+    border: 1px solid black;
+}
+
+.black {
+    background-color: black;
+}
