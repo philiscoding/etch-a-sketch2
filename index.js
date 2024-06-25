@@ -7,18 +7,34 @@ const sketchContainer = document.createElement("div");
 const buttonContainer = document.createElement("div");
 const input = document.createElement("input");
 const button = document.createElement("button");
+const shadingButton = document.createElement("button");
+const rainBowButton = document.createElement("button");
+const resetButton = document.createElement("button");
 
 sketchContainer.classList.add("sketch-container");
 buttonContainer.classList.add("button-container");
 button.classList.add("button");
-button.textContent = "GO!";
+button.textContent = "CREATE GRID";
 input.setAttribute("placeholder", "Enter grid size: Eg 64")
+shadingButton.textContent = "SHADING";
+rainBowButton.textContent = "RAINBOW MODE";
+resetButton.textContent = "RESET";
+shadingButton.classList.add("button");
+rainBowButton.classList.add("button");
+resetButton.classList.add("button");
+
 
 buttonContainer.appendChild(input);
 buttonContainer.appendChild(button);
+buttonContainer.appendChild(shadingButton);
+buttonContainer.appendChild(rainBowButton);
+buttonContainer.appendChild(resetButton);
+
 body.appendChild(sketchContainer);
 body.insertBefore(buttonContainer, sketchContainer);
 
+let colorMode = "default";
+let shading = false;
 let drawState = false;
 
 
@@ -53,20 +69,69 @@ button.addEventListener("click", function generateGrid() {
     }
 });
 
-//create 16 div's and append them to container
-// for (let i = 0; i < 256; i++) {
-//     const square = document.createElement("div");
-//     square.classList.add("square");
-//     square.addEventListener("mouseenter", paint)
-//     sketchContainer.appendChild(square);
-// }
+shadingButton.addEventListener("click", () => {
+    shading = true;
+});
 
-//on click, look at input data
-//generate new sequence of divs based on number
+rainBowButton.addEventListener("click", () => {
+    colorMode = "rainbow";
+});
 
+resetButton.addEventListener("click", () => {
+    colorMode = "default";
+    shading = false;
+});
+
+
+
+// create 16 div's and append them to container
+for (let i = 0; i < 256; i++) {
+    const square = document.createElement("div");
+    square.classList.add("square");
+    square.style.height = "50px";
+    square.style.width = "50px";
+    square.addEventListener("mouseenter", paint);
+    sketchContainer.appendChild(square);
+}
 
 function paint() {
-    if (drawState) {
+    //default black
+    if (drawState && colorMode == "default") {
         this.classList.add("black");
+
+    }
+    //rainbow colors
+    else if (drawState && colorMode == "rainbow") {
+        let max = rainbowColors.length;
+        let randomRainbowColor = getRandomNum(max);
+        this.style.backgroundColor = rainbowColors[randomRainbowColor];
+    }
+    //shading functionality
+    if (drawState && shading) {
+        let opacity = 0.1;
+
+        if(!this.style.opacity){
+            this.style.opacity = opacity.toString();
+        }else{
+            let opacityAsNum = +this.style.opacity + opacity;
+            this.style.opacity = opacityAsNum.toString();
+        }
+
+
     }
 }
+
+//get random num from 0 to max
+function getRandomNum(max) {
+    return Math.floor(Math.random() * max);
+}
+
+const rainbowColors = [
+    "#E81416",
+    "#FFA500",
+    "#FAEB36",
+    "#79C314",
+    "#487DE7",
+    "#4B369D",
+    "#70369D"
+];

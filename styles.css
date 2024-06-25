@@ -18,7 +18,7 @@ body {
 }
 
 input {
-    height: 30px;
+    height: 40px;
     width: 220px;
     padding-left: 10px;
 }
@@ -33,8 +33,12 @@ input {
 }
 
 .button {
-    width: 60px;
-    height: 30px;
+    width: 125px;
+    height: 40px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .square {
