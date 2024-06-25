@@ -1,7 +1,3 @@
-//16x16 divs
-//they need to be in a container
-//border,margins and box model
-//
 const body = document.querySelector("body");
 const sketchContainer = document.createElement("div");
 const buttonContainer = document.createElement("div");
@@ -23,7 +19,6 @@ shadingButton.classList.add("button");
 rainBowButton.classList.add("button");
 resetButton.classList.add("button");
 
-
 buttonContainer.appendChild(input);
 buttonContainer.appendChild(button);
 buttonContainer.appendChild(shadingButton);
@@ -38,13 +33,13 @@ let shading = false;
 let drawState = false;
 
 
-window.addEventListener("mousedown", function (e) {
+sketchContainer.addEventListener("mousedown", function (e) {
     if (e.button === 0) {
         drawState = true;
     }
 });
 
-window.addEventListener("mouseup", function (e) {
+sketchContainer.addEventListener("mouseup", function (e) {
     if (e.button === 0) {
         drawState = false;
     }
@@ -64,7 +59,8 @@ button.addEventListener("click", function generateGrid() {
         square.classList.add("square");
         square.style.height = size + "px";
         square.style.width = size + "px";
-        square.addEventListener("mouseenter", paint)
+        square.addEventListener("mouseover", paint);
+        square.addEventListener("mousedown", paint);
         sketchContainer.appendChild(square);
     }
 });
@@ -82,42 +78,39 @@ resetButton.addEventListener("click", () => {
     shading = false;
 });
 
-
-
 // create 16 div's and append them to container
 for (let i = 0; i < 256; i++) {
     const square = document.createElement("div");
     square.classList.add("square");
     square.style.height = "50px";
     square.style.width = "50px";
-    square.addEventListener("mouseenter", paint);
+    square.addEventListener("mouseover", paint);
+    square.addEventListener("mousedown", paint);
     sketchContainer.appendChild(square);
 }
 
-function paint() {
+function paint(e) {
     //default black
+    if (e.type === 'mouseover' && !drawState) return
     if (drawState && colorMode == "default") {
-        this.classList.add("black");
-
+        e.target.style.backgroundColor = "black"
     }
     //rainbow colors
     else if (drawState && colorMode == "rainbow") {
         let max = rainbowColors.length;
         let randomRainbowColor = getRandomNum(max);
-        this.style.backgroundColor = rainbowColors[randomRainbowColor];
+        e.target.style.backgroundColor = rainbowColors[randomRainbowColor];
     }
     //shading functionality
     if (drawState && shading) {
         let opacity = 0.1;
 
-        if(!this.style.opacity){
-            this.style.opacity = opacity.toString();
-        }else{
-            let opacityAsNum = +this.style.opacity + opacity;
-            this.style.opacity = opacityAsNum.toString();
+        if (!e.target.style.opacity) {
+            e.target.style.opacity = opacity.toString();
+        } else {
+            let opacityAsNum = +e.target.style.opacity + opacity;
+            e.target.style.opacity = opacityAsNum.toString();
         }
-
-
     }
 }
 
